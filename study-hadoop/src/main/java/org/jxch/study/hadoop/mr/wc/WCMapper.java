@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
+// 泛型分别是：输入的键值类型; 输出的键值类型
 public class WCMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
     @Override
