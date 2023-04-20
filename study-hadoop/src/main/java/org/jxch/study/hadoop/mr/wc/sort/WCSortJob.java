@@ -1,4 +1,4 @@
-package org.jxch.study.hadoop.mr.wc;
+package org.jxch.study.hadoop.mr.wc.sort;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -9,21 +9,19 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.jxch.study.hadoop.mr.wc.WCMapper;
+import org.jxch.study.hadoop.mr.wc.WCReducer;
 
 import java.io.IOException;
 
-public class WCJob {
-
+public class WCSortJob {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
-        Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf);
+        Job job = Job.getInstance(new Configuration());
 
-        job.setJarByClass(WCJob.class);
+        job.setJarByClass(WCSortJob.class);
 
         job.setMapperClass(WCMapper.class);
         job.setReducerClass(WCReducer.class);
-//        设置Shuffle流程的Combiner (本机的合并)
-        job.setCombinerClass(WCReducer.class);
 
 //        Mapper 输出键值类型
         job.setMapOutputKeyClass(Text.class);
@@ -40,7 +38,25 @@ public class WCJob {
         FileOutputFormat.setOutputPath(job, new Path("/wc/output"));
 
 //        等待执行完并检查是否执行成功
-        System.exit(job.waitForCompletion(true)? 0:-1);
-    }
+        if (job.waitForCompletion(true)) {
+            Job sortJob = Job.getInstance(new Configuration());
 
+            sortJob.setJarByClass(WCSortJob.class);
+            sortJob.setMapperClass(WCSortMapper.class);
+            sortJob.setReducerClass(WCSortReducer.class);
+            sortJob.setMapOutputKeyClass(DescIntWritable.class);
+            sortJob.setMapOutputValueClass(Text.class);
+            sortJob.setOutputKeyClass(Text.class);
+            sortJob.setOutputValueClass(IntWritable.class);
+            sortJob.setInputFormatClass(TextInputFormat.class);
+            sortJob.setOutputFormatClass(TextOutputFormat.class);
+            sortJob.setPartitionerClass(WCPartitioner.class);
+            sortJob.setNumReduceTasks(2);
+
+            FileInputFormat.setInputPaths(sortJob, new Path("/wc/output"));
+            FileOutputFormat.setOutputPath(sortJob, new Path("/wc/output_sort"));
+
+            System.exit(sortJob.waitForCompletion(true)? 0:-1);
+        }
+    }
 }

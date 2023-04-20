@@ -57,8 +57,10 @@ public class FSTest {
     //测试删除文件
     @Test
     public void testDelete() throws Exception {
-        Path dst = new Path("/test.txt");
+        Path dst = new Path("/wc/output");
+        Path dst_sort = new Path("/wc/output_sort");
         fileSystem.delete(dst, true);
+        fileSystem.delete(dst_sort, true);
     }
 
     //测试使用流的方式上传

@@ -6,7 +6,7 @@
 
     <groupId>org.jxch.study</groupId>
     <artifactId>study-hadoop</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -72,7 +72,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>org.jxch.study.hadoop.mr.wc.WCJob</mainClass>
+                            <mainClass>org.jxch.study.hadoop.mr.wc.sort.WCSortJob</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
