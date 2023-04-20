@@ -65,7 +65,7 @@ public class FSTest {
     @Test
     public void testUploadUseStream() throws Exception {
         FileInputStream fis = new FileInputStream("E:\\work\\jxch-study\\study-hadoop\\study-hadoop\\src\\main\\resources\\test.txt");
-        Path path = new Path("/test.txt");
+        Path path = new Path("/wc/input/test2.txt");
         FSDataOutputStream fos = fileSystem.create(path);
         IOUtils.copy(fis, fos);
     }
