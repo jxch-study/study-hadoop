@@ -22,8 +22,6 @@ public class WCJob {
 
         job.setMapperClass(WCMapper.class);
         job.setReducerClass(WCReducer.class);
-//        设置Shuffle流程的Combiner (本机的合并)
-        job.setCombinerClass(WCReducer.class);
 
 //        Mapper 输出键值类型
         job.setMapOutputKeyClass(Text.class);
