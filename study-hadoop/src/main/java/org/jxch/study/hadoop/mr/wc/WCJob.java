@@ -22,6 +22,7 @@ public class WCJob {
 
         job.setMapperClass(WCMapper.class);
         job.setReducerClass(WCReducer.class);
+        job.setCombinerClass(WCReducer.class);
 
 //        Mapper 输出键值类型
         job.setMapOutputKeyClass(Text.class);
